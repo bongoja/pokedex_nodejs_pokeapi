@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Pokedex</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="stylesheet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Nav bar + dropdown-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Menu</a>
+      <button type="button" class="btn btn-primary" onclick="fetchPokemon()">Show All Pokemons</button>
+      <div style="width:100px;">
+        <p class="stype">Show type:</p>
+      </div>
+      <select name="navyOp" id="dropdown" onchange="fetchPokemon(this.value);"> </select>
+    </nav>
+    <div class="container">
+      <h1>Pokedex</h1>
+      <section class="pokemon-results">
+        <ol id="pokedex"></ol>
+      </section>
+    </div>
+
+    <div style="text-align:center;">
+     <input type="button" class="btn btn-primary" id="first" onclick="firstPage()" value="first" />
+     <input type="button" class="btn btn-primary" id="next" onclick="nextPage()" value="next" />
+     <input type="button" class="btn btn-primary" id="previous" onclick="previousPage()" value="previous" />
+     <input type="button" class="btn btn-primary"  id="last" onclick="lastPage()" value="last" />
+     <div id="list"></div>
+   </div>
+    <script src="pokes.js"></script>
+  </body>
+</html>
