@@ -9,7 +9,7 @@ let currentPage = 1;
 let numberOfPages = 0;
 let pageList = new Array();
 let list = new Array();
-
+//Pagination functions architecture
 const nextPage = () => {
   currentPage += 1;
   loadList();
@@ -55,6 +55,7 @@ const check = () => {
   document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
 };
 
+//Function gets 150 pokemon with their data from PokeAPI
 const fetchPokemon = (inType) => {
   console.log(inType);
   const promises = [];
@@ -64,23 +65,32 @@ const fetchPokemon = (inType) => {
   }
   Promise.all(promises).then((results) => {
     let pokemon = results.map((data) => ({
+      //Specifying data
       name: data.name,
       id: data.id,
       image: data.sprites["front_default"],
       type: data.types.map((type) => type.type.name).join(", "),
     }));
+    //Filtering pokemon types
     if (typeof inType != "undefined") {
       pokemon = pokemon.filter((row) => row.type.includes(inType) === true);
     }
+    //Some types of pokemon are empty so...
     if (pokemon.length === 0) {
       alert("There is no such pokemon!");
+      fetchPokemon();
+      console.log(inType);
     }
     currentPage = 1;
     numberOfPages = getNumberOfPages(pokemon.length);
     list = pokemon;
     loadList();
+    // const test = '';
+    // return test;
+    // console.log(test);
   });
 };
+//Display pokemon function with mapping and specifying HTML output code
 const displayPokemon = (pokemon) => {
   const pokemonHTMLString = pokemon
     .map(
@@ -97,6 +107,7 @@ const displayPokemon = (pokemon) => {
   pokedex.innerHTML = pokemonHTMLString;
 };
 
+//Cache single pokemon data
 const selectPokemon = async (id) => {
   if (!pokeCache[id]) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
@@ -107,7 +118,7 @@ const selectPokemon = async (id) => {
     displayPopup(pokeman);
   } else displayPopup(pokeCache[id]);
 };
-
+//Popup display settings in HTML
 const displayPopup = (pokeman) => {
   console.log(pokeman);
   const type = pokeman.types.map((type) => type.type.name).join(",");
@@ -126,12 +137,12 @@ const displayPopup = (pokeman) => {
   pokedex.innerHTML = htmlString + pokedex.innerHTML;
   console.log(htmlString);
 };
-
+//Close popup button removes popup
 const closePopup = () => {
   const popup = document.querySelector(".popup");
   popup.parentElement.removeChild(popup);
 };
-
+//Getting all types data form PokeAPI
 const fetchTypes = () => {
   const url = `https://pokeapi.co/api/v2/type`;
   fetch(url)
@@ -145,5 +156,7 @@ const fetchTypes = () => {
       dropdown.innerHTML = typesHTMLString;
     });
 };
+
+//Calling main functions
 fetchPokemon();
 fetchTypes();
