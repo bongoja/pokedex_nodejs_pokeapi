@@ -18,7 +18,7 @@ const fetchPokemon = () => {
     }));
   });
 };
-
+console.log(fetchPokemon);
 const getPokemonOfType(allPokemon, inType) {
   if (inType) {
     return allPokemon.filter((row) => row.type.includes(inType));
