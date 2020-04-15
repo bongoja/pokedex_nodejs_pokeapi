@@ -71,8 +71,11 @@ const fetchPokemon = (inType) => {
     }));
     if (typeof inType != "undefined") {
       pokemon = pokemon.filter((row) => row.type.includes(inType) === true);
-      currentPage = 1;
     }
+    if (pokemon.length === 0) {
+      alert("There is no such pokemon!");
+    }
+    currentPage = 1;
     numberOfPages = getNumberOfPages(pokemon.length);
     list = pokemon;
     loadList();
@@ -128,7 +131,6 @@ const closePopup = () => {
   const popup = document.querySelector(".popup");
   popup.parentElement.removeChild(popup);
 };
-
 
 const fetchTypes = () => {
   const url = `https://pokeapi.co/api/v2/type`;
