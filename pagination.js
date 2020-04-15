@@ -3,6 +3,58 @@ const pokedex = document.getElementById("pokedex");
 const dropdown = document.getElementById("dropdown");
 const pokeCache = {};
 console.log(pokedex);
+
+const numberPerPage = 6;
+let currentPage = 1;
+let numberOfPages = 0;
+let pageList = new Array();
+let list = new Array();
+
+const nextPage = () => {
+  currentPage += 1;
+  loadList();
+};
+
+const previousPage = () => {
+  currentPage -= 1;
+  loadList();
+};
+
+const firstPage = () => {
+  currentPage = 1;
+  loadList();
+};
+
+const lastPage = () => {
+  currentPage = numberOfPages;
+  loadList();
+};
+
+const getNumberOfPages = (num) => {
+  return Math.ceil(num / numberPerPage);
+};
+
+const drawList = () => {
+  document.getElementById("list").innerHTML = "";
+  displayPokemon(pageList);
+};
+
+const loadList = () => {
+  var begin = (currentPage - 1) * numberPerPage;
+  var end = begin + numberPerPage;
+
+  pageList = list.slice(begin, end);
+  drawList();
+  check();
+};
+
+const check = () => {
+  document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
+  document.getElementById("previous").disabled = currentPage == 1 ? true : false;
+  document.getElementById("first").disabled = currentPage == 1 ? true : false;
+  document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
+};
+
 const fetchPokemon = (inType) => {
   console.log(inType);
   const promises = [];
@@ -20,8 +72,9 @@ const fetchPokemon = (inType) => {
     if (typeof inType != "undefined") {
       pokemon = pokemon.filter((row) => row.type.includes(inType) === true);
     }
-    console.log(pokemon);
-    displayPokemon(pokemon);
+    numberOfPages = getNumberOfPages(pokemon.length);
+    list = pokemon;
+    loadList();
   });
 };
 const displayPokemon = (pokemon) => {
@@ -41,21 +94,20 @@ const displayPokemon = (pokemon) => {
 };
 
 const selectPokemon = async (id) => {
-  if(!pokeCache[id]) {
+  if (!pokeCache[id]) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     const res = await fetch(url);
     const pokeman = await res.json();
     pokeCache[id] = pokeman;
     console.log(pokeCache);
     displayPopup(pokeman);
-  }
-  else displayPopup(pokeCache[id]);
-}
+  } else displayPopup(pokeCache[id]);
+};
 
 const displayPopup = (pokeman) => {
   console.log(pokeman);
-  const type = pokeman.types.map (type => type.type.name).join(',');
-  const image = pokeman.sprites['front_default'];
+  const type = pokeman.types.map((type) => type.type.name).join(",");
+  const image = pokeman.sprites["front_default"];
   const htmlString = `
   <div class="popup">
     <button id="closeBtn" onclick="closePopup()">Close</button>
@@ -67,14 +119,15 @@ const displayPopup = (pokeman) => {
     </div>
     </div>
     `;
-    pokedex.innerHTML = htmlString + pokedex.innerHTML;
-    console.log(htmlString);
+  pokedex.innerHTML = htmlString + pokedex.innerHTML;
+  console.log(htmlString);
 };
 
 const closePopup = () => {
-  const popup = document.querySelector('.popup');
+  const popup = document.querySelector(".popup");
   popup.parentElement.removeChild(popup);
 };
+
 const fetchTypes = () => {
   const url = `https://pokeapi.co/api/v2/type`;
   fetch(url)
@@ -90,72 +143,3 @@ const fetchTypes = () => {
 };
 fetchPokemon();
 fetchTypes();
-
-
-
-    var list = new Array();
-    var pageList = new Array();
-    var currentPage = 1;
-    var numberPerPage = 6;
-    var numberOfPages = 0;
-
-function makeList() {
-    for (x = 0; x < 200; x++)
-        list.push(x);
-
-    numberOfPages = getNumberOfPages();
-}
-
-function getNumberOfPages() {
-    return Math.ceil(150 / numberPerPage);
-}
-
-function nextPage() {
-    currentPage += 1;
-    loadList();
-}
-
-function previousPage() {
-    currentPage -= 1;
-    loadList();
-}
-
-function firstPage() {
-    currentPage = 1;
-    loadList();
-}
-
-function lastPage() {
-    currentPage = numberOfPages;
-    loadList();
-}
-
-function loadList() {
-    var begin = ((currentPage - 1) * numberPerPage);
-    var end = begin + numberPerPage;
-
-    pageList = list.slice(begin, end);
-    drawList();
-    check();
-}
-
-function drawList() {
-    document.getElementById("list").innerHTML = "";
-    for (r = 0; r < pageList.length; r++) {
-        document.getElementById("list").innerHTML += pageList[r] + "<br/>";
-    }
-}
-
-function check() {
-    document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
-    document.getElementById("previous").disabled = currentPage == 1 ? true : false;
-    document.getElementById("first").disabled = currentPage == 1 ? true : false;
-    document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
-}
-
-function load() {
-    makeList();
-    loadList();
-}
-
-window.onload = load;
