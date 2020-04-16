@@ -19,23 +19,30 @@
   </head>
   <body>
     <!-- Nav bar + dropdown-->
+
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <p class="navbar-brand" href="#">Menu</p>
+      <p class="navbar-brand" href="#">Current type:</p>
+      <p id="currentType"></p>
+      <div style="width: 10px;">
+      </div>
       <button type="button" class="btn btn-primary" onclick="fetchPokemon()">Show All Types</button>
+
       <div style="width:100px;">
         <p class="stype">Choose type:</p>
       </div>
-      <!-- <div id="test">
-      </div> -->
       <select name="navyOp" id="dropdown" onchange="fetchPokemon(this.value);"> </select>
       <div style="width: 10px;">
       </div>
-      <form autocomplete="off" action="/action_page.php">
+      <div style="width:50px;">
+      </div>
+      <!-- Search input (not woring yet...) -->
+      <!-- <form autocomplete="off" action="/action_page.php">
         <div class="autocomplete" style="width:300px;">
           <input id="myInput" type="text" name="myCountry" placeholder="Find pokemon">
         </div>
         <input type="submit">
-      </form>
+      </form> -->
     </nav>
     <div class="container">
       <h1>Pokedex</h1>

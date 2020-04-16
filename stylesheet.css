@@ -168,3 +168,8 @@ input[type=submit] {
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+
+#currentType {
+  color: purple;
+  margin: 2px 0px 0px 0px;
+}
